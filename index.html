@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Simulador de Neurona Artificial · Una sola entrada</title>
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="diseño.css">
+</head>
+<body>
+
+  <div class="app-container">
+
+    <!-- ============ HEADER ============ -->
+    <header class="app-header">
+      <h1 class="app-title">Simulador de Neurona Artificial</h1>
+      <p class="app-subtitle">Visualiza paso a paso cómo una neurona calcula su salida</p>
+    </header>
+
+    <main class="app-main">
+
+      <!-- ============ FLUJO HORIZONTAL DE 5 ETAPAS ============ -->
+      <section class="flow-section" aria-label="Recorrido del cálculo">
+
+        <div class="flow-container" id="flowContainer">
+
+          <!-- Etapa 1: Entrada -->
+          <div class="stage-card" data-step="input">
+            <div class="stage-number">1</div>
+            <h2 class="stage-title">Entrada</h2>
+            <p class="stage-description">La neurona recibe el valor de entrada.</p>
+            <div class="stage-formula">
+              x = <span data-value="input">—</span>
+            </div>
+            <div class="stage-value" id="stage1Value">—</div>
+          </div>
+
+          <div class="stage-connector" data-connector="1">
+            <div class="connector-line"></div>
+            <div class="connector-arrow"></div>
+          </div>
+
+          <!-- Etapa 2: Ponderación -->
+          <div class="stage-card" data-step="multiply">
+            <div class="stage-number">2</div>
+            <h2 class="stage-title">Ponderación</h2>
+            <p class="stage-description">Se multiplica la entrada por su peso.</p>
+            <div class="stage-formula">
+              x · w = <span data-value="multiply">—</span>
+            </div>
+            <div class="stage-value" id="stage2Value">—</div>
+          </div>
+
+          <div class="stage-connector" data-connector="2">
+            <div class="connector-line"></div>
+            <div class="connector-arrow"></div>
+          </div>
+
+          <!-- Etapa 3: Sesgo -->
+          <div class="stage-card" data-step="sum">
+            <div class="stage-number">3</div>
+            <h2 class="stage-title">Sesgo</h2>
+            <p class="stage-description">Se suma el sesgo al resultado de la ponderación.</p>
+            <div class="stage-formula">
+              (x · w) + b = <span data-value="sum">—</span>
+            </div>
+            <div class="stage-value" id="stage3Value">—</div>
+          </div>
+
+          <div class="stage-connector" data-connector="3">
+            <div class="connector-line"></div>
+            <div class="connector-arrow"></div>
+          </div>
+
+          <!-- Etapa 4: Activación -->
+          <div class="stage-card" data-step="activation">
+            <div class="stage-number">4</div>
+            <h2 class="stage-title">Activación</h2>
+            <p class="stage-description">La función de activación transforma el valor.</p>
+            <div class="stage-formula" id="activationFormula">
+              f(x · w + b) = <span data-value="activation">—</span>
+            </div>
+            <div class="stage-value" id="stage4Value">—</div>
+          </div>
+
+          <div class="stage-connector" data-connector="4">
+            <div class="connector-line"></div>
+            <div class="connector-arrow"></div>
+          </div>
+
+          <!-- Etapa 5: Salida -->
+          <div class="stage-card" data-step="output">
+            <div class="stage-number">5</div>
+            <h2 class="stage-title">Salida</h2>
+            <p class="stage-description">La neurona genera su valor de salida.</p>
+            <div class="stage-formula">
+              y = <span data-value="output">—</span>
+            </div>
+            <div class="stage-value" id="stage5Value">—</div>
+          </div>
+
+        </div>
+
+        <!-- Fórmula simbólica / numérica (conservada para tu JS) -->
+        <div class="formula-display" style="margin-top: var(--spacing-lg); text-align: center;">
+          <div class="formula-symbolic" data-formula="symbolic">
+            Fórmula: <code>y = f(x · w + b)</code>
+          </div>
+          <div class="formula-numeric" data-formula="numeric">
+            Ajusta los parámetros y pulsa "Animar" para ver el cálculo.
+          </div>
+        </div>
+
+      </section>
+
+      <!-- ============ CONTROLES ============ -->
+      <section class="controls-section" aria-label="Controles de la neurona">
+        <h2 class="panel-title" style="margin-bottom: var(--spacing-lg);">Parámetros</h2>
+
+        <div class="controls-grid">
+
+          <div class="control-group">
+            <label class="control-label" for="inputValueSlider">
+              Entrada (<span class="math-var">x</span>)
+            </label>
+            <div class="slider-container">
+              <input type="range" id="inputValueSlider" min="-5" max="5" step="0.1" value="2" />
+              <input type="number" id="inputValueNumber" min="-5" max="5" step="0.1" value="2" />
+            </div>
+          </div>
+
+          <div class="control-group">
+            <label class="control-label" for="weightSlider">
+              Peso (<span class="math-var">w</span>)
+            </label>
+            <div class="slider-container">
+              <input type="range" id="weightSlider" min="-3" max="3" step="0.1" value="1.5" />
+              <input type="number" id="weightNumber" min="-3" max="3" step="0.1" value="1.5" />
+            </div>
+          </div>
+
+          <div class="control-group">
+            <label class="control-label" for="biasSlider">
+              Sesgo (<span class="math-var">b</span>)
+            </label>
+            <div class="slider-container">
+              <input type="range" id="biasSlider" min="-5" max="5" step="0.1" value="-1" />
+              <input type="number" id="biasNumber" min="-5" max="5" step="0.1" value="-1" />
+            </div>
+          </div>
+
+          <div class="control-group">
+            <label class="control-label" for="activationFunction">
+              Función de activación
+            </label>
+            <select id="activationFunction" class="activation-select">
+              <option value="relu">ReLU</option>
+              <option value="sigmoid">Sigmoide</option>
+            </select>
+          </div>
+
+          <div class="control-group mode-toggle">
+            <label class="toggle-label" style="display: flex; align-items: center; gap: var(--spacing-sm); cursor: pointer; color: var(--color-text-secondary); font-size: var(--font-size-sm);">
+              <input type="checkbox" id="liveModeToggle" checked />
+              <span>Actualización en vivo</span>
+            </label>
+          </div>
+
+          <div class="control-group" style="display: flex; align-items: flex-end;">
+            <button id="animateButton" class="animate-btn">
+              <span>▶</span>
+              <span>Animar cálculo paso a paso</span>
+            </button>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- ============ PANEL EXPLICATIVO INFERIOR ============ -->
+      <section class="explanation-panel" aria-label="Interpretación didáctica">
+
+        <div class="neuron-visual">
+          <div class="neuron-dendrites"></div>
+          <div class="neuron-core" id="neuronCore"></div>
+        </div>
+
+        <div class="explanation-content">
+          <h3 class="explanation-title">¿Qué está pasando?</h3>
+          <p class="interpretation-text" data-interpretation style="margin-bottom: var(--spacing-md);">
+            Configura los parámetros y observa cómo la neurona transforma la entrada en una salida.
+          </p>
+
+          <div class="explanation-steps" id="explanationSteps">
+
+            <div class="explanation-step" data-step="input">
+              <div class="step-indicator"></div>
+              <div class="step-text">
+                <strong>Entrada:</strong> se toma el valor de la entrada (x = <span id="expInput">—</span>).
+              </div>
+            </div>
+
+            <div class="explanation-step" data-step="multiply">
+              <div class="step-indicator"></div>
+              <div class="step-text">
+                <strong>Ponderación:</strong> se multiplica por el peso (w = <span id="expWeight">—</span>) y se obtiene <span id="expWeighted">—</span>.
+              </div>
+            </div>
+
+            <div class="explanation-step" data-step="sum">
+              <div class="step-indicator"></div>
+              <div class="step-text">
+                <strong>Sesgo:</strong> se suma el sesgo (b = <span id="expBias">—</span>) y el resultado es <span id="expBiased">—</span>.
+              </div>
+            </div>
+
+            <div class="explanation-step" data-step="activation">
+              <div class="step-indicator"></div>
+              <div class="step-text">
+                <strong>Activación:</strong> la función <span id="expActivation">ReLU</span> <span id="expActivationDesc">transforma el valor</span>, por lo que la salida es <span id="expActivated">—</span>.
+              </div>
+            </div>
+
+            <div class="explanation-step" data-step="output">
+              <div class="step-indicator"></div>
+              <div class="step-text">
+                <strong>Salida:</strong> la neurona entrega el valor final: <strong id="expOutput">—</strong>.
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+      </section>
+
+    </main>
+
+    <footer class="app-footer" style="text-align: center; padding: var(--spacing-xl); color: var(--color-text-muted); font-size: var(--font-size-sm);">
+      <p>Proyecto educativo · HTML5 + CSS3 + JavaScript ES Modules</p>
+    </footer>
+
+  </div>
+
+  <script type="module" src="js/main.js"></script>
+</body>
+</html>
